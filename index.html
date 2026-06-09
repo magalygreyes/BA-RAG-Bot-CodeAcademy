@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BA Agent — BreezeOps · Bootcamp Capstone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --paper: #f6f3ec;        /* warm cream background */
+  --paper-2: #fbf9f4;      /* lighter cream */
+  --white: #ffffff;
+  --green: #0f5c47;        /* primary deep forest-teal */
+  --green-deep: #0a4435;   /* hover */
+  --green-bg: #16271f;     /* dark forest section */
+  --mint: #e4f0e9;         /* light green pill */
+  --mint-2: #d4e9dd;
+  --ink: #0f1c16;          /* near-black green heading */
+  --body-text: #55645c;    /* muted body */
+  --muted: #8a968f;        /* lighter labels */
+  --sand: #c8a97a;         /* warm accent (rare) */
+  --blue: #2f6fb3;         /* azure devops chip */
+  --amber: #b4690e;
+  --border: rgba(15,60,45,0.12);
+  --border-2: rgba(15,60,45,0.06);
+  --shadow: 0 14px 44px rgba(15,40,30,0.07);
+  --shadow-sm: 0 6px 20px rgba(15,40,30,0.06);
+  --display: 'Poppins', sans-serif;
+  --body: 'Nunito', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--body-text); font-family: var(--body); font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+
+/* BOOTCAMP STRIP */
+.bootcamp-strip { background: var(--green-bg); color: #cfe3d8; text-align: center; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.4px; padding: 7px 16px; position: relative; z-index: 110; }
+.bootcamp-strip b { color: #fff; }
+.bootcamp-strip .hash { color: #8fd3b4; }
+
+/* NAV */
+nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; padding: 16px 48px; background: rgba(246,243,236,0.85); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border-2); }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-size: 19px; color: var(--ink); letter-spacing: -0.4px; }
+.nav-logo .dots { display: grid; grid-template-columns: repeat(3,4px); gap: 3px; }
+.nav-logo .dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--green); display: block; }
+.nav-logo span { color: var(--muted); font-family: var(--body); font-size: 13px; font-weight: 600; margin-left: 2px; }
+.nav-links { display: flex; gap: 26px; margin-left: 44px; }
+.nav-links a { color: var(--body-text); font-size: 14px; text-decoration: none; font-weight: 600; transition: color 0.2s; }
+.nav-links a:hover { color: var(--green); }
+.nav-cta { margin-left: auto; }
+.btn-primary { padding: 10px 22px; background: var(--green); border: none; border-radius: 40px; color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; font-family: var(--body); cursor: pointer; transition: all 0.2s; }
+.btn-primary:hover { background: var(--green-deep); }
+
+/* HERO */
+.hero { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 110px 48px 80px; text-align: center; background: radial-gradient(ellipse 700px 400px at 50% 0%, rgba(15,92,71,0.06), transparent 70%); }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--mint); border: 1px solid var(--mint-2); border-radius: 30px; padding: 7px 16px; font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 30px; animation: fadeUp 0.6s ease both; }
+.hero-eyebrow::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 6.5vw, 78px); line-height: 1.04; color: var(--ink); letter-spacing: -1.8px; margin-bottom: 22px; max-width: 880px; animation: fadeUp 0.6s 0.1s ease both; }
+.hero h1 em { color: var(--green); font-style: italic; }
+.hero-sub { font-size: 19px; color: var(--body-text); line-height: 1.65; max-width: 580px; margin-bottom: 38px; animation: fadeUp 0.6s 0.2s ease both; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+.btn-large { padding: 16px 32px; background: var(--green); border: none; border-radius: 40px; color: #fff; font-size: 16px; font-weight: 700; text-decoration: none; font-family: var(--body); cursor: pointer; transition: all 0.2s; }
+.btn-large:hover { background: var(--green-deep); transform: translateY(-1px); box-shadow: 0 10px 26px rgba(15,92,71,0.25); }
+.btn-large-ghost { padding: 16px 32px; background: var(--white); border: 1px solid var(--border); border-radius: 40px; color: var(--ink); font-size: 16px; font-weight: 700; text-decoration: none; font-family: var(--body); cursor: pointer; transition: all 0.2s; }
+.btn-large-ghost:hover { border-color: var(--green); color: var(--green); }
+.hero-stats { display: flex; gap: 60px; justify-content: center; margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--border-2); animation: fadeUp 0.6s 0.4s ease both; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-family: var(--display); font-weight: 800; font-size: 34px; color: var(--ink); letter-spacing: -1px; }
+.hero-stat-label { font-size: 13px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+/* SECTION HEADERS */
+.section-label { font-size: 12px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; text-align: center; }
+.section-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4vw, 44px); color: var(--ink); text-align: center; margin-bottom: 16px; letter-spacing: -1px; }
+.section-sub { color: var(--body-text); text-align: center; max-width: 500px; margin: 0 auto 56px; font-size: 17px; }
+
+/* MOCKUP */
+.mockup-section { padding: 90px 48px; }
+.mockup-wrapper { max-width: 1000px; margin: 0 auto; position: relative; }
+.mockup-frame { background: var(--white); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); position: relative; }
+.mockup-titlebar { display: flex; align-items: center; gap: 8px; padding: 13px 18px; background: var(--paper-2); border-bottom: 1px solid var(--border-2); }
+.mockup-dot { width: 11px; height: 11px; border-radius: 50%; }
+.mockup-inner { display: grid; grid-template-columns: 240px 1fr; height: 430px; }
+.mockup-sidebar { background: var(--paper-2); border-right: 1px solid var(--border-2); padding: 16px; display: flex; flex-direction: column; gap: 5px; }
+.mock-label { font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 6px 0 2px; }
+.mock-item { padding: 8px 10px; border-radius: 8px; font-size: 12px; color: var(--body-text); display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.mock-item.selected { background: var(--mint); color: var(--green); }
+.mockup-main { display: flex; flex-direction: column; }
+.mock-topbar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--white); border-bottom: 1px solid var(--border-2); }
+.mock-chip { background: #e6f0fa; color: var(--blue); border-radius: 5px; font-size: 9px; font-weight: 700; padding: 3px 8px; font-family: var(--mono); }
+.mock-content { flex: 1; padding: 18px; overflow: hidden; background: var(--paper); }
+.blur-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 220px; background: linear-gradient(transparent, var(--paper) 78%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 30px; border-radius: 0 0 20px 20px; }
+.unlock-btn { padding: 13px 26px; background: var(--green); border: none; border-radius: 40px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--body); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 26px rgba(15,92,71,0.25); }
+
+/* FEATURES */
+.features-section { padding: 90px 48px; }
+.features-grid { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.feature-card { background: var(--white); border: 1px solid var(--border-2); border-radius: 18px; padding: 32px 28px; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; }
+.feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.feature-icon { width: 48px; height: 48px; border-radius: 13px; background: var(--mint); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 18px; }
+.feature-title { font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--ink); margin-bottom: 9px; letter-spacing: -0.4px; }
+.feature-desc { font-size: 14.5px; color: var(--body-text); line-height: 1.65; }
+.feature-tag { display: inline-block; margin-top: 16px; font-size: 11px; font-weight: 700; color: var(--green); background: var(--mint); border-radius: 20px; padding: 4px 12px; }
+
+/* SOLUTION CALLOUT (dark forest panel) */
+.solution-callout { max-width: 1120px; margin: 64px auto 0; background: var(--green-bg); border-radius: 22px; padding: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.solution-callout h3 { font-family: var(--display); font-weight: 800; font-size: 32px; color: #fff; letter-spacing: -1px; margin-bottom: 16px; line-height: 1.15; }
+.solution-callout h3 em { color: #8fd3b4; font-style: italic; }
+.solution-callout p { color: #b8ccc2; line-height: 1.75; margin-bottom: 16px; font-size: 15.5px; }
+.sol-step-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+.sol-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(143,211,180,0.15); border: 1px solid rgba(143,211,180,0.35); color: #8fd3b4; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--mono); }
+.sol-text { font-size: 14px; color: #cfe3d8; line-height: 1.55; padding-top: 3px; }
+.sol-text strong { color: #fff; }
+.btn-light { padding: 14px 28px; background: #fff; border: none; border-radius: 40px; color: var(--green); font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--body); margin-top: 6px; transition: transform 0.2s; }
+.btn-light:hover { transform: translateY(-1px); }
+
+/* DELIVERABLES */
+.deliverables-section { padding: 90px 48px; }
+.deliverables-grid { max-width: 920px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.del-chip { background: var(--white); border: 1px solid var(--border-2); border-radius: 12px; padding: 13px 15px; font-size: 12.5px; color: var(--body-text); font-weight: 600; display: flex; align-items: center; gap: 9px; box-shadow: var(--shadow-sm); transition: all 0.15s; }
+.del-chip:hover { border-color: var(--green); color: var(--ink); transform: translateY(-2px); }
+.del-chip span { font-size: 15px; }
+
+/* PRICING */
+.pricing-section { padding: 90px 48px; }
+.pricing-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.pricing-card { background: var(--white); border: 1px solid var(--border-2); border-radius: 20px; padding: 36px 30px; display: flex; flex-direction: column; position: relative; box-shadow: var(--shadow-sm); }
+.pricing-card.featured { background: var(--green-bg); box-shadow: var(--shadow); }
+.pricing-featured-badge { position: absolute; top: 18px; right: 18px; background: #8fd3b4; color: var(--green-bg); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.pricing-tier { font-size: 12px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.featured .pricing-tier { color: #8fd3b4; }
+.pricing-name { font-family: var(--display); font-weight: 700; font-size: 24px; color: var(--ink); margin-bottom: 16px; }
+.featured .pricing-name { color: #fff; }
+.pricing-amount { font-family: var(--display); font-weight: 800; font-size: 46px; color: var(--ink); letter-spacing: -2px; line-height: 1; }
+.featured .pricing-amount { color: #fff; }
+.pricing-amount span { font-size: 19px; color: var(--muted); font-weight: 500; }
+.pricing-period { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.featured .pricing-period { color: #9fb6ab; }
+.pricing-divider { height: 1px; background: var(--border-2); margin: 22px 0; }
+.featured .pricing-divider { background: rgba(255,255,255,0.12); }
+.pricing-features { display: flex; flex-direction: column; gap: 11px; flex: 1; margin-bottom: 28px; }
+.pricing-feature { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--body-text); }
+.featured .pricing-feature { color: #cfe3d8; }
+.pricing-check { color: var(--green); font-weight: 800; flex-shrink: 0; }
+.featured .pricing-check { color: #8fd3b4; }
+.pricing-feature.dim { opacity: 0.45; }
+.pricing-cta { padding: 13px; border-radius: 40px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--body); text-align: center; text-decoration: none; display: block; transition: all 0.2s; border: none; }
+.pricing-cta-green { background: var(--green); color: #fff; }
+.pricing-cta-green:hover { background: var(--green-deep); }
+.pricing-cta-light { background: #fff; color: var(--green); }
+.pricing-cta-outline { background: transparent; border: 1px solid var(--border); color: var(--ink); }
+.pricing-cta-outline:hover { border-color: var(--green); color: var(--green); }
+
+/* UNDER THE HOOD */
+.how-grid { max-width: 1080px; margin: 0 auto; display: flex; align-items: stretch; justify-content: center; gap: 10px; }
+.how-step { flex: 1; background: var(--white); border: 1px solid var(--border-2); border-radius: 16px; padding: 26px 22px; box-shadow: var(--shadow-sm); }
+.how-num { width: 34px; height: 34px; border-radius: 50%; background: var(--mint); color: var(--green); font-family: var(--mono); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.how-title { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--ink); margin-bottom: 8px; }
+.how-desc { font-size: 13.5px; color: var(--body-text); line-height: 1.6; }
+.how-arrow { display: flex; align-items: center; color: var(--mint-2); font-size: 22px; font-weight: 700; }
+.how-stack { max-width: 1080px; margin: 26px auto 0; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.3px; }
+@media (max-width: 560px) { .how-grid { flex-direction: column; } .how-arrow { transform: rotate(90deg); } }
+
+/* SOCIAL */
+.social-section { padding: 80px 48px; }
+.testimonials { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.testimonial { background: var(--white); border: 1px solid var(--border-2); border-radius: 16px; padding: 26px; box-shadow: var(--shadow-sm); }
+.testimonial-quote { font-size: 14.5px; color: var(--ink); line-height: 1.7; margin-bottom: 18px; }
+.testimonial-author { display: flex; align-items: center; gap: 11px; }
+.testimonial-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--mint); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--green); }
+.testimonial-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+.testimonial-role { font-size: 12px; color: var(--muted); }
+
+/* FINAL CTA */
+.final-cta { padding: 110px 48px; text-align: center; }
+.final-cta h2 { font-family: var(--display); font-weight: 800; font-size: clamp(34px, 5vw, 58px); color: var(--ink); letter-spacing: -1.6px; margin-bottom: 18px; line-height: 1.08; }
+.final-cta h2 em { color: var(--green); font-style: italic; }
+.final-cta p { color: var(--body-text); font-size: 18px; max-width: 480px; margin: 0 auto 36px; }
+.cta-note { font-size: 13px; color: var(--muted); margin-top: 18px; }
+
+/* FOOTER */
+footer { padding: 40px 48px; border-top: 1px solid var(--border-2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-logo { font-family: var(--display); font-weight: 800; font-size: 17px; color: var(--ink); }
+.footer-note { font-size: 13px; color: var(--muted); }
+.footer-note b { color: var(--green); }
+.footer-links { display: flex; gap: 22px; }
+.footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.footer-links a:hover { color: var(--green); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   LIVE BA AGENT — light theme
+   ============================================================ */
+.agent-launcher { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; align-items: center; gap: 10px; padding: 14px 22px 14px 18px; background: var(--green); color: #fff; border: none; border-radius: 40px; font-family: var(--body); font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 12px 32px rgba(15,92,71,0.3); transition: transform 0.2s; }
+.agent-launcher:hover { transform: translateY(-2px); }
+.agent-launcher .dot { width: 8px; height: 8px; border-radius: 50%; background: #8fd3b4; box-shadow: 0 0 0 3px rgba(143,211,180,0.4); animation: pulse 2s infinite; }
+.agent-launcher.hidden { display: none; }
+
+.agent-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 460px; max-width: 100vw; z-index: 300; background: var(--paper); border-left: 1px solid var(--border); display: flex; flex-direction: column; transform: translateX(105%); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); box-shadow: -24px 0 70px rgba(15,40,30,0.12); }
+.agent-panel.open { transform: translateX(0); }
+.agent-head { padding: 16px 18px; border-bottom: 1px solid var(--border-2); background: var(--white); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.ah-avatar { width: 38px; height: 38px; border-radius: 11px; background: var(--mint); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--green); }
+.ah-name { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--ink); }
+.ah-status { font-size: 11px; color: var(--green); font-weight: 600; display: flex; align-items: center; gap: 5px; }
+.ah-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.ah-close { margin-left: auto; background: var(--paper-2); border: 1px solid var(--border-2); color: var(--body-text); width: 32px; height: 32px; border-radius: 9px; cursor: pointer; font-size: 16px; transition: all 0.2s; }
+.ah-close:hover { border-color: var(--green); color: var(--green); }
+.agent-tabs { display: flex; gap: 4px; padding: 10px 14px 0; background: var(--white); border-bottom: 1px solid var(--border-2); flex-shrink: 0; }
+.agent-tab { flex: 1; padding: 10px 6px; background: transparent; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-family: var(--body); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.agent-tab:hover { color: var(--body-text); }
+.agent-tab.active { color: var(--green); border-bottom-color: var(--green); }
+.agent-body { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.agent-body::-webkit-scrollbar { width: 8px; }
+.agent-body::-webkit-scrollbar-thumb { background: var(--mint-2); border-radius: 4px; }
+
+.agent-empty { text-align: center; padding: 22px 8px; }
+.ae-icon { width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 16px; background: var(--mint); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.ae-title { font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--ink); margin-bottom: 7px; }
+.ae-sub { font-size: 14px; color: var(--body-text); line-height: 1.6; max-width: 320px; margin: 0 auto 18px; }
+.quick-chips { display: flex; flex-direction: column; gap: 9px; }
+.quick-chip { text-align: left; background: var(--white); border: 1px solid var(--border-2); border-radius: 11px; padding: 12px 14px; color: var(--body-text); font-size: 13.5px; font-family: var(--body); font-weight: 600; cursor: pointer; transition: all 0.18s; box-shadow: var(--shadow-sm); }
+.quick-chip:hover { border-color: var(--green); transform: translateY(-1px); }
+.quick-chip b { display: block; color: var(--ink); font-size: 14.5px; margin: 2px 0; }
+.qc-step { display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.7px; }
+.qc-sub { display: block; font-size: 12px; color: var(--muted); font-weight: 500; line-height: 1.4; }
+/* task tracker */
+.tracker-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.tracker-progress { font-family:var(--mono); font-size:11px; font-weight:700; color:var(--green); background:var(--mint); border-radius:20px; padding:4px 11px; white-space:nowrap; flex-shrink:0; }
+.quick-chip.phase { padding-left:46px; position:relative; }
+.qc-status { position:absolute; left:13px; top:14px; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; font-family:var(--mono); }
+.quick-chip.phase.todo .qc-status { background:var(--paper); border:1px solid var(--border); color:var(--muted); }
+.quick-chip.phase.active { border-color:var(--green); box-shadow:0 0 0 2px rgba(15,92,71,0.12), var(--shadow-sm); }
+.quick-chip.phase.active .qc-status { background:var(--green); color:#fff; }
+.quick-chip.phase.done .qc-status { background:var(--mint); border:1px solid var(--mint-2); color:var(--green); }
+.quick-chip.phase.done b { color:var(--body-text); }
+.qc-badge { position:absolute; right:12px; top:13px; font-family:var(--mono); font-size:9px; font-weight:700; padding:3px 8px; border-radius:20px; letter-spacing:0.3px; }
+.qc-badge.here { background:var(--green); color:#fff; }
+.qc-badge.next { background:var(--mint); color:var(--green); }
+.quick-chip.shortcut { text-align:center; border-style:dashed; }
+/* compact stepper */
+.stepper { position:sticky; top:0; z-index:2; background:var(--white); border:1px solid var(--border-2); border-radius:12px; padding:12px 14px; margin-bottom:6px; box-shadow:var(--shadow-sm); }
+.stepper-dots { display:flex; align-items:center; justify-content:space-between; }
+.step { background:none; border:none; cursor:pointer; padding:0; }
+.step-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:11px; font-weight:700; transition:all 0.2s; }
+.step.todo .step-dot { background:var(--paper); border:1px solid var(--border); color:var(--muted); }
+.step.active .step-dot { background:var(--green); color:#fff; box-shadow:0 0 0 3px rgba(15,92,71,0.15); }
+.step.done .step-dot { background:var(--mint); color:var(--green); }
+.stepper-label { font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:9px; text-align:center; }
+.stepper-label b { color:var(--green); }
+
+.msg { display: flex; gap: 10px; }
+.msg.user { flex-direction: row-reverse; }
+.msg-avatar { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; font-weight: 700; }
+.msg.bot .msg-avatar { background: var(--mint); color: var(--green); }
+.msg.user .msg-avatar { background: var(--paper-2); border: 1px solid var(--border-2); color: var(--body-text); }
+.msg-bubble { max-width: 84%; padding: 12px 15px; border-radius: 14px; font-size: 14px; line-height: 1.65; }
+.msg.bot .msg-bubble { background: var(--white); border: 1px solid var(--border-2); color: var(--ink); border-top-left-radius: 4px; box-shadow: var(--shadow-sm); }
+.msg.user .msg-bubble { background: var(--green); color: #fff; border-top-right-radius: 4px; }
+.msg-bubble h3, .msg-bubble h4 { font-family: var(--display); font-weight: 700; color: var(--green); margin: 12px 0 5px; font-size: 15px; }
+.msg-bubble h3:first-child, .msg-bubble h4:first-child { margin-top: 0; }
+.msg-bubble strong { color: var(--ink); font-weight: 700; }
+.msg-bubble ul, .msg-bubble ol { margin: 7px 0 7px 18px; }
+.msg-bubble li { margin: 4px 0; }
+.msg-bubble p { margin: 7px 0; }
+.msg-bubble p:first-child { margin-top: 0; }
+.msg-bubble code { font-family: var(--mono); font-size: 12px; background: var(--mint); padding: 1px 5px; border-radius: 4px; color: var(--green); }
+
+.sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; padding-top: 10px; border-top: 1px dashed var(--mint-2); }
+.sources-label { width: 100%; font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px; }
+.source-chip { font-size: 10.5px; font-family: var(--mono); color: var(--green); background: var(--mint); border-radius: 5px; padding: 3px 8px; }
+
+.typing { display: flex; gap: 4px; padding: 4px 0; }
+.typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--green); opacity: 0.4; animation: typing 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%,60%,100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+
+.story-card { background: var(--white); border: 1px solid var(--border-2); border-radius: 12px; overflow: hidden; margin-bottom: 9px; box-shadow: var(--shadow-sm); }
+.sc-head { display: flex; align-items: center; gap: 7px; padding: 9px 12px; background: var(--paper-2); border-bottom: 1px solid var(--border-2); flex-wrap: wrap; }
+.sc-id { font-size: 9.5px; color: var(--blue); font-family: var(--mono); background: #e6f0fa; border-radius: 4px; padding: 2px 7px; font-weight: 600; }
+.sc-title { font-size: 12.5px; color: var(--ink); font-weight: 700; }
+.sc-pri { font-size: 8.5px; border-radius: 4px; padding: 2px 7px; margin-left: auto; font-weight: 700; font-family: var(--mono); text-transform: uppercase; }
+.sc-pri.High { color: var(--amber); background: #fbefe0; }
+.sc-pri.Medium { color: var(--blue); background: #e6f0fa; }
+.sc-pri.Low { color: var(--muted); background: var(--paper-2); }
+.sc-sp { font-size: 9px; color: var(--body-text); font-family: var(--mono); background: var(--paper-2); border: 1px solid var(--border-2); border-radius: 4px; padding: 2px 7px; }
+.sc-body { padding: 10px 12px; }
+.sc-story { font-size: 12px; color: var(--body-text); font-style: italic; margin-bottom: 8px; }
+.sc-story b { color: var(--ink); font-style: normal; }
+.sc-ac-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; margin-bottom: 4px; }
+.sc-ac { font-size: 11.5px; color: var(--body-text); padding: 3px 0; border-bottom: 1px solid var(--border-2); }
+.sc-ac:last-child { border-bottom: none; }
+.csv-btn { width: 100%; padding: 12px; margin-top: 5px; background: #e6f0fa; border: 1px solid rgba(47,111,179,0.25); border-radius: 10px; color: var(--blue); font-family: var(--body); font-weight: 700; font-size: 13.5px; cursor: pointer; transition: all 0.2s; }
+.csv-btn:hover { background: #d8e8f6; }
+
+.agent-foot { padding: 12px 14px; border-top: 1px solid var(--border-2); background: var(--white); flex-shrink: 0; }
+.composer { display: flex; gap: 8px; align-items: flex-end; }
+.composer textarea { flex: 1; resize: none; background: var(--paper); border: 1px solid var(--border); border-radius: 12px; color: var(--ink); font-family: var(--body); font-size: 14px; padding: 11px 13px; max-height: 120px; line-height: 1.5; }
+.composer textarea:focus { outline: none; border-color: var(--green); }
+.composer textarea::placeholder { color: var(--muted); }
+.send-btn { width: 42px; height: 42px; border-radius: 12px; background: var(--green); border: none; color: #fff; font-size: 17px; cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
+.send-btn:hover { background: var(--green-deep); }
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.gen-form { display: flex; flex-direction: column; gap: 11px; }
+.gen-form label { font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+.gen-form select, .gen-form textarea { background: var(--white); border: 1px solid var(--border); border-radius: 11px; color: var(--ink); font-family: var(--body); font-size: 14px; padding: 11px 13px; }
+.gen-form select:focus, .gen-form textarea:focus { outline: none; border-color: var(--green); }
+.gen-form textarea { resize: vertical; min-height: 76px; }
+.gen-go { padding: 13px; background: var(--green); border: none; border-radius: 40px; color: #fff; font-family: var(--body); font-weight: 700; font-size: 14px; cursor: pointer; transition: background 0.2s; }
+.gen-go:hover { background: var(--green-deep); }
+.gen-go:disabled { opacity: 0.5; cursor: not-allowed; }
+.agent-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 9px; line-height: 1.5; }
+
+@media (max-width: 560px) {
+  nav { padding: 14px 18px; }
+  .nav-links { display: none; }
+  .hero, .mockup-section, .features-section, .deliverables-section, .pricing-section, .final-cta, .social-section { padding-left: 18px; padding-right: 18px; }
+  .features-grid, .pricing-grid, .testimonials, .deliverables-grid { grid-template-columns: 1fr; }
+  .solution-callout { grid-template-columns: 1fr; padding: 30px; }
+  .hero-stats { gap: 28px; }
+  .agent-panel { width: 100vw; border-left: none; }
+  .agent-launcher { bottom: 16px; right: 16px; }
+  footer { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="bootcamp-strip">🎓 Codecademy <b>Agentic AI Bootcamp</b> — Capstone Project · RAG-Powered Business Analyst · <span class="hash">#CodecademyAgenticAIBootcamp</span></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    BreezeOps <span>· BA Agent</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#deliverables">Deliverables</a>
+    <a href="#how">How it works</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn-primary" onclick="openAgent('ask')">Try the Agent →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Live RAG demo · BABOK v3 grounded</div>
+  <h1>Your <em>Senior BA</em><br/>available 24/7</h1>
+  <p class="hero-sub">A retrieval-augmented business analyst that thinks like a consultant — grounded in real BA methodology, producing PM-ready documentation in seconds.</p>
+  <div class="hero-actions">
+    <button class="btn-large" onclick="openAgent('ask')">Try the BA Agent live →</button>
+    <a href="#mockup" class="btn-large-ghost">See it in action</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">15+</div><div class="hero-stat-label">Deliverable types</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">BABOK</div><div class="hero-stat-label">v3 grounded</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">SAFe</div><div class="hero-stat-label">6.0 ready</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">CSV</div><div class="hero-stat-label">DevOps export</div></div>
+  </div>
+</section>
+
+<!-- MOCKUP -->
+<section class="mockup-section" id="mockup">
+  <div class="section-label">Product preview</div>
+  <h2 class="section-title reveal">What your team actually sees</h2>
+  <p class="section-sub reveal">A professional BA workspace — a structured analyst that produces real deliverables, not just chat.</p>
+  <div class="mockup-wrapper reveal">
+    <div class="mockup-frame">
+      <div class="mockup-titlebar">
+        <div class="mockup-dot" style="background:#ff5f57"></div>
+        <div class="mockup-dot" style="background:#febc2e"></div>
+        <div class="mockup-dot" style="background:#28c840"></div>
+        <span style="font-size:12px;color:var(--muted);margin-left:8px;font-weight:600">BreezeOps · BA Agent</span>
+        <span class="mock-chip" style="margin-left:auto;background:var(--mint);color:var(--green)">BABOK v3</span>
+      </div>
+      <div class="mockup-inner">
+        <div class="mockup-sidebar">
+          <div class="mock-label">Discovery & scope</div>
+          <div class="mock-item"><span>🎯</span>Scoping Document</div>
+          <div class="mock-item"><span>👥</span>Stakeholder Register</div>
+          <div class="mock-label">Requirements</div>
+          <div class="mock-item selected"><span>📝</span>Agile User Stories</div>
+          <div class="mock-item"><span>📄</span>Business Requirements</div>
+          <div class="mock-label">Analysis</div>
+          <div class="mock-item"><span>🕳️</span>Gap Analysis</div>
+          <div class="mock-item"><span>⚠️</span>Risk Register</div>
+        </div>
+        <div class="mockup-main">
+          <div class="mock-topbar">
+            <span style="font-size:11px;color:var(--body-text);font-weight:600">📋 Agile User Stories</span>
+            <span class="mock-chip" style="margin-left:auto">Azure DevOps</span>
+          </div>
+          <div class="mock-content">
+            <div class="story-card" style="margin-bottom:9px">
+              <div class="sc-head">
+                <span class="sc-id">US-001</span>
+                <span class="sc-title">User Login & Authentication</span>
+                <span class="sc-pri High">High</span>
+                <span class="sc-sp">SP 3</span>
+              </div>
+              <div class="sc-body">
+                <div class="sc-story">As a <b>portal user</b>, I want to <b>log in securely</b>, so that <b>my data stays protected</b>.</div>
+                <div class="sc-ac-label">Acceptance Criteria</div>
+                <div class="sc-ac">Given I am on the login page, when I enter valid credentials, then I am signed in.</div>
+              </div>
+            </div>
+            <div class="story-card" style="opacity:0.65">
+              <div class="sc-head">
+                <span class="sc-id">US-002</span>
+                <span class="sc-title">Customer Dashboard View</span>
+                <span class="sc-pri High">High</span>
+                <span class="sc-sp">SP 5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="blur-overlay">
+        <button class="unlock-btn" onclick="openAgent('stories')">⚡ Try it live — generate real user stories</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-label">What's inside</div>
+  <h2 class="section-title reveal">Built for real BA work</h2>
+  <p class="section-sub reveal">Not a generic chatbot. A structured BA system grounded in enterprise methodology.</p>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <div class="feature-title">Grounded in methodology</div>
+      <div class="feature-desc">Every answer retrieves from a curated BABOK v3, SAFe 6.0, and Agile knowledge base — and shows you exactly which sources it used. Real retrieval, not guesswork.</div>
+      <div class="feature-tag">Live RAG</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📄</div>
+      <div class="feature-title">15+ deliverable types</div>
+      <div class="feature-desc">BRD, FRD, user stories, gap analysis, risk register, RACI, business case, process flows, use cases, KPIs — generated on demand, structured to BABOK v3 standards.</div>
+      <div class="feature-tag">BABOK v3</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <div class="feature-title">DevOps & ServiceNow export</div>
+      <div class="feature-desc">User stories render as individual cards, then export as a properly formatted CSV — ready to paste straight into Azure DevOps or ServiceNow. No reformatting.</div>
+      <div class="feature-tag">Direct import</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <div class="feature-title">PM Agent handoff</div>
+      <div class="feature-desc">Every solution becomes a structured brief that feeds the PM Agent. No re-entry of information — one project, multiple agents, a seamless workflow.</div>
+      <div class="feature-tag">Ecosystem ready</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📐</div>
+      <div class="feature-title">SAFe 6.0 & Agile ready</div>
+      <div class="feature-desc">Epics, features, and user stories structured to the SAFe 6.0 framework, with sprint planning, velocity assumptions, and release criteria built in.</div>
+      <div class="feature-tag">SAFe 6.0</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <div class="feature-title">Conversation memory</div>
+      <div class="feature-desc">The agent holds full context through your session. Iterate, refine, and build on outputs without losing your work — just ask for changes in plain language.</div>
+      <div class="feature-tag">Full context</div>
+    </div>
+  </div>
+
+  <!-- SOLUTION CALLOUT -->
+  <div class="solution-callout reveal">
+    <div>
+      <h3>Not a scribe — a <em>consultant</em></h3>
+      <p>A senior BA doesn't just take orders. This agent follows a real project lifecycle: it challenges vague requests to find the root business problem, then designs the analysis approach before writing a single requirement.</p>
+      <p>The result is documentation that negotiates value and uncovers the "why" behind every "what" — not a pile of templates.</p>
+      <button class="btn-light" onclick="openAgent('ask', 'Walk me through how a senior BA approaches a new project, from intake to delivery.')">See how it thinks →</button>
+    </div>
+    <div>
+      <div class="sol-step-item"><div class="sol-num">1</div><div class="sol-text"><strong>Discover & listen</strong> — what problem are we solving, and what happens if we do nothing?</div></div>
+      <div class="sol-step-item"><div class="sol-num">2</div><div class="sol-text"><strong>Scope & define</strong> — draw the line on in- and out-of-scope before requirements.</div></div>
+      <div class="sol-step-item"><div class="sol-num">3</div><div class="sol-text"><strong>Elicit & analyse</strong> — map as-is vs to-be, translate complaints into precise requirements.</div></div>
+      <div class="sol-step-item"><div class="sol-num">4</div><div class="sol-text"><strong>Prioritise & validate</strong> — MoSCoW with tech and business leads, then hand off clean.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section class="deliverables-section" id="deliverables">
+  <div class="section-label">Deliverables</div>
+  <h2 class="section-title reveal">Everything your team needs</h2>
+  <p class="section-sub reveal">One agent. Every document. BABOK-grade quality every time.</p>
+  <div class="deliverables-grid reveal">
+    <div class="del-chip"><span>🎯</span>Scoping Document</div>
+    <div class="del-chip"><span>📄</span>Business Requirements</div>
+    <div class="del-chip"><span>🔧</span>Functional Requirements</div>
+    <div class="del-chip"><span>📝</span>Agile User Stories</div>
+    <div class="del-chip"><span>🗂️</span>SAFe Epics & Features</div>
+    <div class="del-chip"><span>🕳️</span>Gap Analysis</div>
+    <div class="del-chip"><span>🔄</span>Process Flows</div>
+    <div class="del-chip"><span>⚠️</span>Risk Register</div>
+    <div class="del-chip"><span>👥</span>Stakeholder Register</div>
+    <div class="del-chip"><span>📊</span>RACI Matrix</div>
+    <div class="del-chip"><span>💼</span>Business Case + ROI</div>
+    <div class="del-chip"><span>🎭</span>Use Case Specs</div>
+    <div class="del-chip"><span>📈</span>KPIs & OKRs</div>
+    <div class="del-chip"><span>🎙️</span>Elicitation Guide</div>
+    <div class="del-chip"><span>🏃</span>Sprint / Release Plan</div>
+    <div class="del-chip"><span>🧠</span>Solution Design Doc</div>
+  </div>
+</section>
+
+<!-- UNDER THE HOOD -->
+<section class="pricing-section" id="how">
+  <div class="section-label">Under the hood</div>
+  <h2 class="section-title reveal">How the retrieval actually works</h2>
+  <p class="section-sub reveal">Not a wrapper around a prompt — a real RAG pipeline you can watch working in every answer.</p>
+  <div class="how-grid reveal">
+    <div class="how-step">
+      <div class="how-num">1</div>
+      <div class="how-title">Knowledge base</div>
+      <div class="how-desc">A senior-BA project lifecycle plus BABOK v3, SAFe 6.0 and deliverable definitions, written as small, source-tagged chunks.</div>
+    </div>
+    <div class="how-arrow">→</div>
+    <div class="how-step">
+      <div class="how-num">2</div>
+      <div class="how-title">Retrieval</div>
+      <div class="how-desc">Your question is scored against every chunk; only the most relevant few are pulled in as context for this specific answer.</div>
+    </div>
+    <div class="how-arrow">→</div>
+    <div class="how-step">
+      <div class="how-num">3</div>
+      <div class="how-title">Grounded generation</div>
+      <div class="how-desc">The model answers using the retrieved chunks as its primary source, so responses stay true to the methodology.</div>
+    </div>
+    <div class="how-arrow">→</div>
+    <div class="how-step">
+      <div class="how-num">4</div>
+      <div class="how-title">Sources shown</div>
+      <div class="how-desc">Every reply lists the exact chunks it retrieved — so you can always see why it said what it said.</div>
+    </div>
+  </div>
+  <div class="how-stack reveal">Curated knowledge base · relevance-scored retrieval · grounded generation · transparent sourcing</div>
+</section>
+
+<!-- SOCIAL -->
+<section class="social-section">
+  <div class="section-label">Early feedback</div>
+  <h2 class="section-title reveal" style="margin-bottom:40px">What testers are saying</h2>
+  <div class="testimonials reveal">
+    <div class="testimonial">
+      <div class="testimonial-quote">"I produced a full BRD and stakeholder register in under 20 minutes. That used to take me two days — and the quality is genuinely consulting-grade."</div>
+      <div class="testimonial-author"><div class="testimonial-avatar">SR</div><div><div class="testimonial-name">Sarah R.</div><div class="testimonial-role">BA Lead · FinTech</div></div></div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-quote">"The DevOps CSV export sold me. I generate a full sprint backlog and import it directly — no copy-paste, no reformatting."</div>
+      <div class="testimonial-author"><div class="testimonial-avatar">MT</div><div><div class="testimonial-name">Marcus T.</div><div class="testimonial-role">Product Manager · SaaS</div></div></div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-quote">"It thinks like a senior consultant. It challenged my request and found the root cause we'd been missing for months."</div>
+      <div class="testimonial-author"><div class="testimonial-avatar">AL</div><div><div class="testimonial-name">Ana L.</div><div class="testimonial-role">Operations Director · Agency</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Stop writing docs.<br/><em>Start shipping work.</em></h2>
+  <p>Your senior BA is ready the moment you are. No onboarding, no waiting.</p>
+  <button class="btn-large" onclick="openAgent('ask')">Try the BA Agent →</button>
+  <div class="cta-note">A RAG-powered capstone project · built for the Codecademy Agentic AI Bootcamp</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">BreezeOps · BA Agent</div>
+  <div class="footer-note">Built by <b>Magaly</b> for the Codecademy Agentic AI Applications Bootcamp · <b>#CodecademyAgenticAIBootcamp</b></div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+  </div>
+</footer>
+
+<!-- ============================================================ -->
+<button class="agent-launcher" id="launcher" onclick="openAgent('ask')">
+  <span class="dot"></span> Ask the BA Agent
+</button>
+
+<div class="agent-panel" id="agentPanel">
+  <div class="agent-head">
+    <div class="ah-avatar">BA</div>
+    <div>
+      <div class="ah-name">BA Agent</div>
+      <div class="ah-status">Online · BABOK v3 grounded</div>
+    </div>
+    <button class="ah-close" onclick="closeAgent()">✕</button>
+  </div>
+  <div class="agent-tabs">
+    <button class="agent-tab active" data-mode="ask" onclick="switchMode('ask')">Ask</button>
+    <button class="agent-tab" data-mode="generate" onclick="switchMode('generate')">Documents</button>
+    <button class="agent-tab" data-mode="stories" onclick="switchMode('stories')">Stories → CSV</button>
+  </div>
+  <div class="agent-body" id="agentBody"></div>
+  <div class="agent-foot" id="agentFoot"></div>
+</div>
+
+<script>
+/* scroll reveal */
+const observer = new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* ============================================================
+   RAG KNOWLEDGE BASE — Magaly's Senior BA Lifecycle (original)
+   + mindset + golden rule + deliverable structures.
+   No copyrighted BABOK text — concepts paraphrased in original voice.
+   ============================================================ */
+const KB = [
+  { id:'lc1', src:'Senior BA Lifecycle · 1. Discover & Listen', text:'In the intake, a senior BA meets the core stakeholders and, instead of asking which features they want, asks what business problem we are solving and what happens if we do nothing. You listen actively for pain points, political dynamics, and underlying motivations, reading between the lines of what stakeholders say they want versus what they actually need.' },
+  { id:'lc2', src:'Senior BA Lifecycle · 2. Scope & Boundaries', text:'Before writing a single requirement, draw a line around the project. Define in-scope and out-of-scope items using tools like context diagrams or functional decomposition. This stops scope creep before it starts. Align everyone on the high-level business objectives and get explicit sign-off.' },
+  { id:'lc3', src:'Senior BA Lifecycle · 3. BA Strategy & Plan', text:'Design the analysis approach rather than just following a template. Decide how you will elicit requirements (workshops, shadow sessions, surveys), who must be consulted, and how documentation will be managed (agile user stories versus formal BRDs). Map a timeline for your own BA deliverables.' },
+  { id:'lc4', src:'Senior BA Lifecycle · 4. Estimate BA Effort', text:'Estimate the time and resources the analysis phase itself will take, sized by the complexity of the scope. For example, to map five current-state processes and run three workshops will take roughly sixty hours of BA effort over three weeks.' },
+  { id:'lc5', src:'Senior BA Lifecycle · 5. Elicitation & Analysis', text:'The heavy lifting. Facilitate workshops, map current-state versus future-state workflows, and dig into data structures and integration points. Analyse gaps, identify bottlenecks, and translate vague stakeholder complaints into precise, logical requirements or user stories.' },
+  { id:'lc6', src:'Senior BA Lifecycle · 6. Prioritise & Validate', text:'Stakeholders always want everything on day one. Lead prioritisation sessions using frameworks like MoSCoW. Validate requirements with tech leads to confirm they are feasible, and with business leads to confirm they deliver real value. This continues throughout the project.' },
+  { id:'lc7', src:'Senior BA Lifecycle · 7. Transition & Support', text:'Once implementation begins, walk the development and QA teams through the requirements so there is zero ambiguity. Act as the bridge: answer developer questions, triage scope questions, and ensure the final product matches the original business intent.' },
+  { id:'mind', src:'Mindset · Senior BA vs BA II', text:'A mid-level BA documents a requested solution; a senior BA challenges the request to find the root business problem. A BA II needs clear direction and templates; a senior BA creates order, templates, and frameworks out of chaos. A BA II gathers from cooperative stakeholders; a senior BA manages difficult, conflicting, or executive stakeholders. A BA II focuses on surface functional requirements; a senior BA understands data flows, system integrations, and architecture impacts.' },
+  { id:'gold', src:'The Golden Rule', text:'A senior BA is not a scribe but a consultant. A scribe takes orders; a senior BA negotiates value, guides strategy, and uncovers the why behind every what.' },
+  { id:'d_brd', src:'Deliverable · BRD', text:'A Business Requirements Document captures what the business needs and why, independent of how it will be built. Sections: background and objectives, in-scope and out-of-scope, business requirements, key stakeholders, assumptions, constraints, dependencies, and success criteria.' },
+  { id:'d_frd', src:'Deliverable · FRD', text:'A Functional Requirements Document specifies the behaviours the system must exhibit: inputs, processing rules, outputs, and responses. Each functional requirement should be testable and traceable back to a business requirement.' },
+  { id:'d_story', src:'Deliverable · User Stories', text:'A user story takes the form: as a [role], I want [capability], so that [benefit]. Good stories follow INVEST: independent, negotiable, valuable, estimable, small, testable. Acceptance criteria are written in Given/When/Then form so the expected behaviour is unambiguous.' },
+  { id:'d_moscow', src:'Technique · MoSCoW', text:'MoSCoW prioritises requirements into Must have, Should have, Could have, and Will not have this time, forcing explicit agreement on what is essential for a release versus what can wait.' },
+  { id:'d_gap', src:'Technique · Gap Analysis', text:'Gap analysis compares the current as-is state with the desired to-be state to identify the differences a change must close. Each gap is described with its impact and the process or system change needed to address it.' },
+  { id:'d_risk', src:'Deliverable · Risk Register', text:'A risk register lists risks with a description, likelihood, impact, an overall rating, a planned response or mitigation, and an owner, reviewed regularly so emerging risks are captured.' },
+  { id:'d_stake', src:'Deliverable · Stakeholder Register & RACI', text:'A stakeholder register records each stakeholder, their role, interest, influence, and engagement approach. A RACI matrix maps responsibilities by marking who is Responsible, Accountable, Consulted, and Informed for each activity.' },
+  { id:'d_case', src:'Deliverable · Business Case & ROI', text:'A business case justifies an investment by comparing benefits against costs and risks: problem statement, options considered, recommended option, costs, quantified and qualitative benefits, an ROI or payback estimate, and assumptions.' },
+  { id:'d_safe', src:'SAFe 6.0 · Epics, Features, Stories', text:'Large initiatives are expressed as epics, broken into features sized to fit a program increment, and decomposed into user stories sized for one iteration. PI planning aligns teams on an Agile Release Train to shared objectives.' },
+  { id:'d_proc', src:'Technique · Process & Use Cases', text:'Process models show the sequence of activities, decisions, and roles in a workflow, often as as-is and to-be diagrams. Use case specifications describe how an actor interacts with a system to reach a goal, including the main success scenario and alternative flows.' },
+  { id:'d_kpi', src:'Technique · KPIs vs OKRs', text:'KPIs are ongoing measures of performance against a target. OKRs pair an ambitious objective with a few measurable key results for a period. KPIs monitor steady-state health while OKRs drive focused change toward a goal.' }
+];
+
+/* lightweight RAG retriever (TF-IDF style lexical retrieval) */
+const STOP = new Set('a an the and or but of to in on for with as is are be by from at this that it its our your we you i need want help me my how do does what why'.split(' '));
+function tokenize(s){ return (s.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(t=>t.length>2&&!STOP.has(t)); }
+const DF = {}; KB.forEach(c=>{ new Set(tokenize(c.text+' '+c.src)).forEach(t=>{ DF[t]=(DF[t]||0)+1; }); });
+function idf(t){ return Math.log((KB.length+1)/((DF[t]||0)+1))+1; }
+function retrieve(query, k=3){
+  const q = tokenize(query); if(!q.length) return [];
+  return KB.map(c=>{
+    const toks = tokenize(c.text+' '+c.src); const tf={}; toks.forEach(t=>tf[t]=(tf[t]||0)+1);
+    let score=0; q.forEach(t=>{ if(tf[t]) score += (tf[t]/toks.length)*idf(t); });
+    return { chunk:c, score };
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,k).map(x=>x.chunk);
+}
+
+/* Anthropic API — key-free inside Claude; flip to 'netlify' for the deployed Edge Function */
+const API_MODE = 'netlify';
+async function callClaude(system, messages){
+  if(API_MODE === 'netlify'){
+    const r = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ system, messages }) });
+    const d = await r.json(); return (d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
+  }
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system, messages })
+  });
+  if(!r.ok) throw new Error('API '+r.status);
+  const d = await r.json(); return (d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
+}
+
+/* markdown-lite */
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function mdLite(t){
+  const lines = esc(t).split('\n'); let html=''; let inUl=false, inOl=false;
+  const close=()=>{ if(inUl){html+='</ul>';inUl=false;} if(inOl){html+='</ol>';inOl=false;} };
+  const inline = s => s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`(.+?)`/g,'<code>$1</code>');
+  lines.forEach(raw=>{
+    const l=raw.trim(); if(!l){ close(); return; } let m;
+    if(m=l.match(/^#{1,6}\s+(.*)/)){ close(); html+='<h4>'+inline(m[1])+'</h4>'; }
+    else if(m=l.match(/^[-*]\s+(.*)/)){ if(!inUl){close();html+='<ul>';inUl=true;} html+='<li>'+inline(m[1])+'</li>'; }
+    else if(m=l.match(/^\d+\.\s+(.*)/)){ if(!inOl){close();html+='<ol>';inOl=true;} html+='<li>'+inline(m[1])+'</li>'; }
+    else { close(); html+='<p>'+inline(l)+'</p>'; }
+  });
+  close(); return html;
+}
+
+/* state + UI */
+let mode='ask', history=[], lastStories=[], busy=false;
+const panel=document.getElementById('agentPanel'), launcher=document.getElementById('launcher'),
+      body=document.getElementById('agentBody'), foot=document.getElementById('agentFoot');
+function openAgent(m, seed){ panel.classList.add('open'); launcher.classList.add('hidden'); switchMode(m||'ask'); if(seed){ setTimeout(()=>sendAsk(seed),300); } }
+function closeAgent(){ panel.classList.remove('open'); launcher.classList.remove('hidden'); }
+function switchMode(m){ mode=m; document.querySelectorAll('.agent-tab').forEach(t=>t.classList.toggle('active', t.dataset.mode===m)); renderMode(); }
+function renderMode(){ if(mode==='ask') renderAsk(); else if(mode==='generate') renderGenerate(); else renderStories(); }
+
+const PERSONA = `You are the BreezeOps BA Agent, a senior business analyst grounded in BABOK v3, SAFe 6.0, and Agile/Scrum. You are not a scribe, you are a consultant: when a request is vague, you challenge it to find the root business problem and uncover the "why" behind every "what". Answer using the RETRIEVED KNOWLEDGE below as your primary grounding. Be practical, structured and concise, using short headings and bullets where they help. If the retrieved knowledge does not fully cover the question, use sound BA best practice but stay accurate. Never invent IIBA page numbers or quotations.`;
+
+/* ASK */
+/* ---- Senior BA Lifecycle as guided tasks ---- */
+const PHASES = [
+  { id:1, tag:'Intake', label:'Discover & Listen', sub:'Start a project — uncover the real problem', seed:'We are starting a new project. Act as my senior BA and run the intake with me: ask what business problem we are trying to solve and what happens if we do nothing, and probe for pain points and the real need versus what is being asked for. Start by asking me two or three discovery questions.' },
+  { id:2, tag:'Scope', label:'Scope & boundaries', sub:"Draw the line: what's in, what's out", seed:'Help me define the scope of my project. Ask me what you need to know, then summarise clear In-Scope and Out-of-Scope lists so we stop scope creep before it starts.' },
+  { id:3, tag:'Plan', label:'What documents do we need?', sub:'A right-sized documentation plan', seed:'Based on a project I will describe, recommend which BA documents we actually need and in what order. Ask me about the project first, then give a short prioritised documentation plan, and remind me I can generate each one in the Documents tab.' },
+  { id:4, tag:'Stories', label:'Shape the user stories', sub:'INVEST + acceptance criteria', seed:'Help me turn a feature into strong user stories using INVEST, each with Given, When, Then acceptance criteria. Ask me which feature to break down first.' },
+  { id:5, tag:'Prioritise', label:'Prioritise requirements', sub:'MoSCoW — feasibility & value', seed:'Help me prioritise my requirements using MoSCoW. Ask me to list the requirements, then sort them into Must, Should, Could, and Will-not-have-this-time, with a one-line reason for each.' },
+  { id:6, tag:'Handoff', label:'Transition & support', sub:'Bridge to dev & QA, protect the intent', seed:'Help me prepare for transition to delivery: how to walk the dev and QA teams through the requirements with zero ambiguity. Ask what is being handed off.' }
+];
+let activePhase = 0; const visited = new Set();
+function phaseStatus(id){ if(id===activePhase) return 'active'; if(visited.has(id)) return 'done'; return 'todo'; }
+function nextPhaseId(){ for(const p of PHASES){ if(!visited.has(p.id) && p.id!==activePhase) return p.id; } return 0; }
+function startPhase(id){ visited.add(id); activePhase=id; sendAsk(PHASES[id-1].seed); }
+function gotoDocuments(){ visited.add(3); if(activePhase<3) activePhase=3; switchMode('generate'); }
+
+function trackerFull(){
+  const nxt = nextPhaseId();
+  const cards = PHASES.map(p=>{
+    const st = phaseStatus(p.id);
+    const icon = st==='done' ? '✓' : p.id;
+    let badge = '';
+    if(st==='active') badge = `<span class="qc-badge here">You're here</span>`;
+    else if(activePhase===0 && p.id===1) badge = `<span class="qc-badge next">Start here</span>`;
+    else if(activePhase!==0 && p.id===nxt) badge = `<span class="qc-badge next">Next →</span>`;
+    return `<button class="quick-chip phase ${st}" onclick="startPhase(${p.id})"><span class="qc-status">${icon}</span><span class="qc-step">${p.id} · ${p.tag}</span><b>${p.label}</b><span class="qc-sub">${p.sub}</span>${badge}</button>`;
+  }).join('');
+  const doneCount = PHASES.filter(p=>phaseStatus(p.id)==='done').length;
+  return `<div class="agent-empty" style="text-align:left;padding:6px 0 0">
+      <div class="tracker-head">
+        <div><div class="ae-title" style="font-size:19px">Project tasks</div>
+        <div class="ae-sub" style="margin:3px 0 0;text-align:left;max-width:none">The senior BA lifecycle — tap a task to begin.</div></div>
+        <div class="tracker-progress">${doneCount}/6 done</div>
+      </div>
+      <div class="quick-chips" style="margin-top:14px">${cards}<button class="quick-chip shortcut" onclick="gotoDocuments()">📂 Know what you need? <b style="display:inline;color:var(--green)">Generate it in Documents →</b></button></div>
+    </div>`;
+}
+function trackerCompact(){
+  const dots = PHASES.map(p=>{ const st=phaseStatus(p.id); return `<button class="step ${st}" title="${p.tag}: ${p.label}" onclick="startPhase(${p.id})"><span class="step-dot">${st==='done'?'✓':p.id}</span></button>`; }).join('');
+  const cur = PHASES.find(p=>p.id===activePhase), nxt = PHASES.find(p=>p.id===nextPhaseId());
+  const label = cur ? `Step ${cur.id} of 6 · <b>${cur.tag}</b>${nxt?` · next: ${nxt.tag}`:' · final step'}` : 'Tap a step to follow the lifecycle';
+  return `<div class="stepper"><div class="stepper-dots">${dots}</div><div class="stepper-label">${label}</div></div>`;
+}
+
+function renderAsk(){
+  const tracker = (history.length===0 && activePhase===0) ? trackerFull() : trackerCompact();
+  const main = history.length===0 ? '' : history.map(renderMsg).join('');
+  body.innerHTML = tracker + main;
+  foot.innerHTML = `<div class="composer">
+      <textarea id="askInput" rows="1" placeholder="Ask anything, or tap a task above…" onkeydown="askKey(event)" oninput="autogrow(this)"></textarea>
+      <button class="send-btn" id="askSend" onclick="sendAsk()">➤</button>
+    </div>
+    <div class="agent-note">Live demo runs inside Claude · deployed version runs on a secure backend</div>`;
+  scrollBottom();
+}
+function renderMsg(m){
+  if(m.role==='user') return `<div class="msg user"><div class="msg-avatar">YOU</div><div class="msg-bubble">${esc(m.content)}</div></div>`;
+  const src = m.sources&&m.sources.length ? `<div class="sources"><div class="sources-label">📚 Retrieved & grounded on</div>${m.sources.map(s=>`<span class="source-chip">${s}</span>`).join('')}</div>` : '';
+  return `<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble">${mdLite(m.content)}${src}</div></div>`;
+}
+function askKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendAsk(); } }
+function autogrow(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+async function sendAsk(seed){
+  if(busy) return;
+  const input=document.getElementById('askInput');
+  const text=(seed||(input&&input.value)||'').trim(); if(!text) return;
+  if(input){ input.value=''; input.style.height='auto'; }
+  history.push({role:'user', content:text}); renderAsk(); busy=true; showTyping();
+  try {
+    const hits=retrieve(text,3);
+    const context=hits.map(h=>`[${h.src}] ${h.text}`).join('\n\n');
+    const system=`${PERSONA}\n\nRETRIEVED KNOWLEDGE:\n${context||'(no strong match — rely on general BA best practice)'}`;
+    const reply=await callClaude(system, history.map(m=>({role:m.role, content:m.content})));
+    history.push({role:'assistant', content:reply, sources:hits.map(h=>h.src)});
+  } catch(err){ history.push({role:'assistant', content:`I couldn't reach the model just now. In this preview the agent runs inside Claude; the deployed version runs on its own secure backend. (${err.message})`}); }
+  busy=false; renderAsk();
+}
+
+/* DOCUMENTS (generate) */
+const DELIVERABLES=['Scoping Document','Business Requirements (BRD)','Functional Requirements (FRD)','Gap Analysis','Risk Register','Stakeholder Register','RACI Matrix','Business Case + ROI','Use Case Specification','Process Flow (As-Is / To-Be)','KPIs & OKRs','Elicitation Guide','Solution Design Document'];
+function renderGenerate(){
+  body.innerHTML = `<div class="agent-empty" style="padding-bottom:6px">
+      <div class="ae-icon">📄</div>
+      <div class="ae-title">Generate documentation</div>
+      <div class="ae-sub">Pick a document type, describe your project, and get a BABOK-grade draft grounded in methodology.</div>
+    </div>
+    <div class="gen-form">
+      <label>Document type</label>
+      <select id="delType">${DELIVERABLES.map(d=>`<option>${d}</option>`).join('')}</select>
+      <label>Describe your project / problem</label>
+      <textarea id="delDesc" placeholder="e.g. We're migrating our customer portal from a legacy on-prem system to a cloud platform. Goal: faster onboarding, fewer support tickets."></textarea>
+      <button class="gen-go" id="delGo" onclick="generateDeliverable()">Generate document</button>
+    </div><div id="genOut"></div>`;
+  foot.innerHTML = `<div class="agent-note">Drafts are concise in this preview · the deployed version supports full-length documents</div>`;
+}
+async function generateDeliverable(){
+  if(busy) return;
+  const type=document.getElementById('delType').value, desc=document.getElementById('delDesc').value.trim(), out=document.getElementById('genOut');
+  if(!desc){ out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble">Add a short project description first and I'll draft the ${esc(type)}.</div></div>`; return; }
+  document.getElementById('delGo').disabled=true;
+  out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  try {
+    const hits=retrieve(type+' '+desc,3); const context=hits.map(h=>`[${h.src}] ${h.text}`).join('\n\n');
+    const system=`${PERSONA}\n\nProduce a professional ${type}, well structured with clear headings and bullets, grounded in the retrieved knowledge. Keep it complete but concise for a preview. Use Markdown.\n\nRETRIEVED KNOWLEDGE:\n${context}`;
+    const reply=await callClaude(system, [{role:'user', content:`Project / problem:\n${desc}\n\nProduce the ${type}.`}]);
+    out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble">${mdLite(reply)}<div class="sources"><div class="sources-label">📚 Retrieved & grounded on</div>${hits.map(h=>`<span class="source-chip">${h.src}</span>`).join('')}</div></div></div>`;
+  } catch(err){ out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble">Couldn't reach the model just now. (${err.message})</div></div>`; }
+  document.getElementById('delGo').disabled=false; scrollBottom();
+}
+
+/* STORIES → CSV */
+function renderStories(){
+  body.innerHTML = `<div class="agent-empty" style="padding-bottom:6px">
+      <div class="ae-icon">📝</div>
+      <div class="ae-title">User stories → Azure DevOps CSV</div>
+      <div class="ae-sub">Describe a feature. The agent writes INVEST user stories with Gherkin acceptance criteria — then exports an import-ready CSV.</div>
+    </div>
+    <div class="gen-form">
+      <label>Feature / project to break down</label>
+      <textarea id="stDesc" placeholder="e.g. A customer portal with secure login, a dashboard, profile management, and support ticket submission."></textarea>
+      <button class="gen-go" id="stGo" onclick="generateStories()">Generate user stories</button>
+    </div><div id="stOut"></div>`;
+  foot.innerHTML = `<div class="agent-note">CSV columns map to Azure DevOps / ServiceNow import fields</div>`;
+}
+async function generateStories(){
+  if(busy) return;
+  const desc=document.getElementById('stDesc').value.trim(), out=document.getElementById('stOut');
+  if(!desc){ out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble">Describe the feature first and I'll break it into user stories.</div></div>`; return; }
+  document.getElementById('stGo').disabled=true;
+  out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  try {
+    const hits=retrieve('user stories INVEST acceptance criteria '+desc,2); const context=hits.map(h=>`[${h.src}] ${h.text}`).join('\n\n');
+    const system=`You are the BreezeOps BA Agent. Break the project into 4-6 agile user stories following INVEST, grounded in the retrieved knowledge. Return ONLY a valid JSON array, no prose, no markdown fences. Each object: {"id":"US-001","title":"short title","asA":"role","iWant":"capability","soThat":"benefit","priority":"High|Medium|Low","storyPoints":number,"acceptanceCriteria":["Given... When... Then...", ...]}.\n\nRETRIEVED KNOWLEDGE:\n${context}`;
+    let reply=await callClaude(system, [{role:'user', content:`Project: ${desc}`}]);
+    reply=reply.replace(/```json/gi,'').replace(/```/g,'').trim();
+    const stories=JSON.parse(reply.slice(reply.indexOf('['), reply.lastIndexOf(']')+1));
+    lastStories=stories;
+    out.innerHTML = stories.map(renderStoryCard).join('') +
+      `<button class="csv-btn" onclick="downloadCSV()">⬇ Download Azure DevOps CSV (${stories.length} stories)</button>` +
+      `<div class="sources"><div class="sources-label">📚 Retrieved & grounded on</div>${hits.map(h=>`<span class="source-chip">${h.src}</span>`).join('')}</div>`;
+  } catch(err){ out.innerHTML=`<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble">Couldn't generate stories just now. (${err.message})</div></div>`; }
+  document.getElementById('stGo').disabled=false; scrollBottom();
+}
+function renderStoryCard(st){
+  const ac=(st.acceptanceCriteria||[]).map(a=>`<div class="sc-ac">${esc(a)}</div>`).join('');
+  return `<div class="story-card"><div class="sc-head">
+      <span class="sc-id">${esc(st.id||'US')}</span>
+      <span class="sc-title">${esc(st.title||'')}</span>
+      <span class="sc-pri ${esc(st.priority||'Medium')}">${esc(st.priority||'Medium')}</span>
+      <span class="sc-sp">SP ${esc(String(st.storyPoints??'-'))}</span>
+    </div><div class="sc-body">
+      <div class="sc-story">As a <b>${esc(st.asA||'')}</b>, I want <b>${esc(st.iWant||'')}</b>, so that <b>${esc(st.soThat||'')}</b>.</div>
+      <div class="sc-ac-label">Acceptance Criteria</div>${ac}
+    </div></div>`;
+}
+function downloadCSV(){
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=[['Work Item Type','Title','Description','Acceptance Criteria','Priority','Story Points']];
+  lastStories.forEach(s=>rows.push(['User Story', s.title||'', `As a ${s.asA||''}, I want ${s.iWant||''}, so that ${s.soThat||''}.`, (s.acceptanceCriteria||[]).join(' | '), s.priority||'', s.storyPoints??'']));
+  const blob=new Blob([rows.map(r=>r.map(q).join(',')).join('\r\n')], {type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ba-agent-user-stories.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+function showTyping(){ body.insertAdjacentHTML('beforeend', `<div class="msg bot"><div class="msg-avatar">BA</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`); scrollBottom(); }
+function scrollBottom(){ requestAnimationFrame(()=>{ body.scrollTop=body.scrollHeight; }); }
+renderMode();
+</script>
+</body>
+</html>
