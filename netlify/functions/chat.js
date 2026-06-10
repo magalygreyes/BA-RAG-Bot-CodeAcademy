@@ -13,9 +13,9 @@ exports.handler = async (event) => {
 
   // 2) Light origin guard — only serve requests coming from our own site.
   //    Netlify sets process.env.URL to the live site address.
-  const site = process.env.URL || "";
   const origin = event.headers.origin || event.headers.referer || "";
-  if (site && origin && !origin.startsWith(site)) {
+  const allowed = origin.includes(".netlify.app") || origin.includes("localhost");
+  if (origin && !allowed) {
     return { statusCode: 403, body: "Forbidden" };
   }
 
